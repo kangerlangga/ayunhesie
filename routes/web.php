@@ -7,6 +7,7 @@ use App\Http\Controllers\HomeSliderController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\PublikController;
+use App\Http\Controllers\StockController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\CheckAdmin;
 use Illuminate\Support\Facades\Route;
@@ -52,6 +53,13 @@ Route::middleware(['auth', 'verified', CheckAdmin::class])->group(function () {
     Route::get('/admin/product/edit/{id}', [ProductController::class, 'edit'])->name('product.edit');
     Route::post('/admin/product/update/{id}', [ProductController::class, 'update'])->name('product.update');
     Route::get('/admin/product/delete/{id}', [ProductController::class, 'destroy'])->name('product.delete');
+
+    Route::get('/admin/stock', [StockController::class, 'index'])->name('stock.data');
+    Route::get('/admin/stock/add', [StockController::class, 'create'])->name('stock.add');
+    Route::post('/admin/stock/store', [StockController::class, 'store'])->name('stock.store');
+    Route::get('/admin/stock/edit/{id}', [StockController::class, 'edit'])->name('stock.edit');
+    Route::post('/admin/stock/update/{id}', [StockController::class, 'update'])->name('stock.update');
+    Route::get('/admin/stock/delete/{id}', [StockController::class, 'destroy'])->name('stock.delete');
 
     Route::get('/admin/blog', [BlogController::class, 'index'])->name('blog.data');
     Route::get('/admin/blog/add', [BlogController::class, 'create'])->name('blog.add');

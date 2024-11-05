@@ -65,6 +65,12 @@
                         <p>Products</p>
                     </a>
                 </li>
+                <li class="nav-item {{ Request::is('admin/stock*') ? 'active' : '' }}">
+                    <a href="{{ route('stock.data') }}">
+                        <i class="fas fa-box-open"></i>
+                        <p>Stocks</p>
+                    </a>
+                </li>
                 <li class="nav-item {{ Request::is('admin/blog*') ? 'active' : '' }}">
                     <a href="{{ route('blog.data') }}">
                         <i class="far fa-newspaper"></i>

@@ -44,7 +44,6 @@ class ForecastController extends Controller
 
         foreach ($products as $product) {
             $productCode = $product->product_stocks;
-
             $productName = Product::where('code_products', $productCode)->first()->name_products ?? 'Unknown Product';
 
             $stocks = Stock::where('product_stocks', $productCode)
@@ -63,10 +62,22 @@ class ForecastController extends Controller
             $labels = [];
             $forecastValues = [];
             $actualValues = [];
+            $calculationDetails = [];
 
             for ($i = 0; $i < $forecastPeriod; $i++) {
-                $currentForecast = round(($alpha * $stocks->last()->monthly_stocks) + ((1 - $alpha) * $previousForecast));
+                // Ambil stock bulan sebelumnya (X)
+                $previousStock = $stocks->get($i) ? $stocks->get($i)->monthly_stocks : 0;
+                // Ambil bulan untuk keterangan (M Y)
+                $previousStockMonth = $stocks->get($i) ? Carbon::parse($stocks->get($i)->date_stocks)->format('M Y') : 'N/A';
 
+                // Menghitung peramalan menggunakan rumus SES
+                $currentForecast = round(($alpha * $previousStock) + ((1 - $alpha) * $previousForecast));
+                $currentForecastR = ($alpha * $previousStock) + ((1 - $alpha) * $previousForecast);
+
+                // Detail perhitungan
+                $calculationDetails[] = "{$alpha} * {$previousStock} ({$previousStockMonth}) + (1 - {$alpha}) * {$previousForecast} = {$currentForecastR}";
+
+                // Ambil data actual untuk bulan yang diramalkan
                 $actualStock = Stock::where('product_stocks', $productCode)
                                     ->whereYear('date_stocks', $nextDate->year)
                                     ->whereMonth('date_stocks', $nextDate->month)
@@ -79,9 +90,11 @@ class ForecastController extends Controller
                 $productForecastData[] = [
                     'date' => $nextDate->format('M Y'),
                     'forecast' => $currentForecast,
-                    'actual' => $actualStock ? $actualStock->monthly_stocks : 0
+                    'actual' => $actualStock ? $actualStock->monthly_stocks : 0,
+                    'calculationDetail' => $calculationDetails[$i]
                 ];
 
+                // Update previousForecast untuk bulan berikutnya
                 $previousForecast = $currentForecast;
                 $nextDate = $nextDate->addMonth();
             }

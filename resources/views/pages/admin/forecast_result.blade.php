@@ -66,6 +66,7 @@
                                                     <th>Date</th>
                                                     <th>Actual Stock</th>
                                                     <th>Forecast</th>
+                                                    <th>Calculation Detail</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -76,6 +77,7 @@
                                                         <td>{{ \Carbon\Carbon::parse($data['date'])->format('F Y') }}</td>
                                                         <td>{{ ($data['actual'] == 0 || !$data['actual']) ? '-' : $data['actual'] }}</td>
                                                         <td>{{ $data['forecast'] }}</td>
+                                                        <td>{{ $data['calculationDetail'] }}</td>
                                                     </tr>
                                                 @endforeach
                                             </tbody>

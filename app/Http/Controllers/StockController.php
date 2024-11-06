@@ -26,6 +26,7 @@ class StockController extends Controller
                 $stock->date_stocks = Carbon::parse($stock->date_stocks)->format('d M Y');
                 return $stock;
             }),
+            'cS' => Stock::count(),
             'cOP' => Order::where('status_orders', 'Pending')->count(),
         ];
         return view('pages.admin.stock', $data);

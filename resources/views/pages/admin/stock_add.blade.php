@@ -117,22 +117,7 @@
             });
         } else {
             if (this.checkValidity()) {
-                e.preventDefault();
-                Swal.fire({
-                    title: 'Confirmation',
-                    text: "Are you sure all the details are correct?",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#35A5B1',
-                    cancelButtonColor: '#AAA',
-                    confirmButtonText: 'Yes, Save!',
-                    cancelButtonText: 'Cancel',
-                    reverseButtons: true
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        this.submit();
-                    }
-                });
+                this.submit();
             } else {
                 this.reportValidity();
             }

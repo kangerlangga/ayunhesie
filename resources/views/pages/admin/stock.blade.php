@@ -36,7 +36,7 @@
                         </a>
                     </ul>
                     <div class="ml-md-auto py-2 py-md-0">
-                        <a href="#" class="btn btn-round btn-default ml-auto fw-bold">
+                        <a href="{{ route('forecast.data') }}" class="btn btn-round btn-default ml-auto fw-bold">
                             <i class="fa fa-chart-line mr-1"></i>
                             Forecasting
                         </a>

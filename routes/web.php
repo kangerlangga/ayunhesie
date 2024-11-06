@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\ForecastController;
 use App\Http\Controllers\HomeSliderController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
@@ -60,6 +61,15 @@ Route::middleware(['auth', 'verified', CheckAdmin::class])->group(function () {
     Route::get('/admin/stock/edit/{id}', [StockController::class, 'edit'])->name('stock.edit');
     Route::post('/admin/stock/update/{id}', [StockController::class, 'update'])->name('stock.update');
     Route::get('/admin/stock/delete/{id}', [StockController::class, 'destroy'])->name('stock.delete');
+
+    Route::get('/admin/stock/forecast', [ForecastController::class, 'index'])->name('forecast.data');
+    Route::post('/admin/stock/forecast/calculate', [ForecastController::class, 'calculateForecast'])->name('forecast.calculate');
+
+    // Route::get('/admin/forecast/add', [ForecastController::class, 'create'])->name('forecast.add');
+    // Route::post('/admin/forecast/store', [ForecastController::class, 'store'])->name('forecast.store');
+    // Route::get('/admin/forecast/edit/{id}', [ForecastController::class, 'edit'])->name('forecast.edit');
+    // Route::post('/admin/forecast/update/{id}', [ForecastController::class, 'update'])->name('forecast.update');
+    // Route::get('/admin/forecast/delete/{id}', [ForecastController::class, 'destroy'])->name('forecast.delete');
 
     Route::get('/admin/blog', [BlogController::class, 'index'])->name('blog.data');
     Route::get('/admin/blog/add', [BlogController::class, 'create'])->name('blog.add');

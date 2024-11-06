@@ -35,7 +35,7 @@ class Stock extends Model
      *
      * @var array
      */
-    protected $fillable = ['id_stocks','product_stocks','date_stocks','month_stocks','year_stocks','monthly_stocks','type_stocks','created_by','modified_by'];
+    protected $fillable = ['id_stocks','product_stocks','date_stocks','monthly_stocks','type_stocks','created_by','modified_by'];
 
     public function product()
     {

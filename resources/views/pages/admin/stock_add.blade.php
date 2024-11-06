@@ -35,31 +35,8 @@
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label for="MonthStock">Month</label>
-                                            <select class="form-control" id="MonthStock" name="MonthStock" onchange="updateDateOptions()">
-                                                <option value="Januari">Januari</option>
-                                                <option value="Februari">Februari</option>
-                                                <option value="Maret">Maret</option>
-                                                <option value="April">April</option>
-                                                <option value="Mei">Mei</option>
-                                                <option value="Juni">Juni</option>
-                                                <option value="Juli">Juli</option>
-                                                <option value="Agustus">Agustus</option>
-                                                <option value="September">September</option>
-                                                <option value="Oktober">Oktober</option>
-                                                <option value="November">November</option>
-                                                <option value="Desember">Desember</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <label for="YearStock">Year</label>
-                                            <select class="form-control" id="YearStock" name="YearStock" required onchange="updateDateOptions()">
-                                                @for ($year = date('Y'); $year >= 2000; $year--)
-                                                    <option value="{{ $year }}">{{ $year }}</option>
-                                                @endfor
-                                            </select>
+                                            <label for="DateStock">Select Date</label>
+                                            <input type="date" class="form-control" id="DateStock" name="DateStock" max="{{ date('Y-m-d') }}" required>
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
@@ -88,20 +65,9 @@
                                             <input class="form-control" name="Type" value="Original" id="Type" readonly style="cursor: not-allowed">
                                         </div>
                                     </div>
-                                    <div class="col-sm-6">
-                                        <div class="form-group @error('DateStock') has-error has-feedback @enderror">
-                                            <label for="DateStock">Date [Optional]</label>
-                                            <select id="DateStock" name="DateStock" class="form-control">
-                                                <option value="">Pilih Tanggal</option>
-                                            </select>
-                                            @error('DateStock')
-                                            <small id="DateStock" class="form-text text-muted">{{ $message }}</small>
-                                            @enderror
-                                        </div>
-                                    </div>
                                     <div class="col-sm-12 mt-1">
                                         <div class="form-group">
-                                            <button type="submit" class="btn btn-primary fw-bold text-uppercase" id="sendAddButton">
+                                            <button type="submit" class="btn btn-primary fw-bold text-uppercase">
                                                 <i class="fas fa-save mr-2"></i>Save
                                             </button>
                                             <button type="reset" class="btn btn-warning fw-bold text-uppercase">
@@ -137,70 +103,15 @@
             timer: 3000
         });
     @endif
-
-    function updateDateOptions() {
-        const monthSelect = document.getElementById('MonthStock');
-        const yearInput = document.getElementById('YearStock');
-        const dateSelect = document.getElementById('DateStock');
-
-        const selectedMonth = monthSelect.value;
-        const selectedYear = yearInput.value || new Date().getFullYear();
-
-        let daysInMonth;
-
-        switch (selectedMonth) {
-            case 'Januari':
-            case 'Maret':
-            case 'Mei':
-            case 'Juli':
-            case 'Agustus':
-            case 'Oktober':
-            case 'Desember':
-                daysInMonth = 31;
-                break;
-            case 'April':
-            case 'Juni':
-            case 'September':
-            case 'November':
-                daysInMonth = 30;
-                break;
-            case 'Februari':
-                daysInMonth = (selectedYear % 4 === 0 && selectedYear % 100 !== 0) || (selectedYear % 400 === 0) ? 29 : 28;
-                break;
-            default:
-                daysInMonth = 0;
-                break;
-        }
-
-        dateSelect.innerHTML = '<option value="">Pilih Tanggal</option>';
-
-        for (let day = 1; day <= daysInMonth; day++) {
-            const option = document.createElement('option');
-            option.value = day;
-            option.textContent = day;
-            dateSelect.appendChild(option);
-        }
-    }
-
     document.querySelector('form').addEventListener('submit', function(e) {
         var productSelect = document.getElementById('Product');
-        var dateSelect = document.getElementById('DateStock');
-
         if (productSelect.value === "") {
             e.preventDefault();
+            productSelect.focus();
             Swal.fire({
                 icon: 'warning',
                 title: 'Oops...',
                 text: 'Please select a product before submitting!',
-                confirmButtonText: 'OK',
-                confirmButtonColor: '#35A5B1',
-            });
-        } else if (dateSelect.value === "") {
-            e.preventDefault();
-            Swal.fire({
-                icon: 'warning',
-                title: 'Oops...',
-                text: 'Please select a date before submitting!',
                 confirmButtonText: 'OK',
                 confirmButtonColor: '#35A5B1',
             });
@@ -226,10 +137,6 @@
                 this.reportValidity();
             }
         }
-    });
-
-    document.addEventListener('DOMContentLoaded', function() {
-        updateDateOptions();
     });
 </script>
 @endsection

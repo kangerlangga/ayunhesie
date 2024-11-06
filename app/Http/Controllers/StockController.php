@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Stock;
 use App\Models\Order;
 use App\Models\Product;
+use Carbon\Carbon;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
@@ -20,7 +21,11 @@ class StockController extends Controller
     {
         $data = [
             'judul' => 'Stocks',
-            'DataS' => Stock::with('product')->orderBy('date_stocks', 'asc')->get(),
+            'DataS' => Stock::with('product')->orderBy('date_stocks', 'asc')->get()
+            ->map(function ($stock) {
+                $stock->date_stocks = Carbon::parse($stock->date_stocks)->format('d M Y');
+                return $stock;
+            }),
             'cOP' => Order::where('status_orders', 'Pending')->count(),
         ];
         return view('pages.admin.stock', $data);
@@ -45,25 +50,17 @@ class StockController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $request->validate([
-            'MonthStock'    => 'required|string|max:255',
-            'YearStock'     => 'required|integer',
-            'Product'       => 'required|string',
-            'Stock'         => 'required|integer|min:1',
-            'DateStock'     => 'nullable|integer',
+            'DateStock' => 'required|date|before_or_equal:today',
+            'Product'   => 'required|string|max:255',
+            'Stock'     => 'required|integer|min:1',
         ]);
 
-        $dateStock = null;
-        if ($request->DateStock) {
-            $monthNumber = array_search($request->MonthStock, ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember']) + 1; // Mendapatkan nomor bulan
-            $dateStock = sprintf('%04d-%02d-%02d', $request->YearStock, $monthNumber, $request->DateStock); // Format YYYY-MM-DD
-        }
+        $dateStock = date('Y-m-d', strtotime($request->DateStock));
 
         Stock::create([
             'id_stocks'         => 'Stock'.Str::random(33),
             'product_stocks'    => $request->Product,
             'date_stocks'       => $dateStock,
-            'month_stocks'      => $request->MonthStock,
-            'year_stocks'       => $request->YearStock,
             'monthly_stocks'    => $request->Stock,
             'type_stocks'       => $request->Type,
             'created_by'        => Auth::user()->email,
@@ -88,6 +85,7 @@ class StockController extends Controller
     public function edit(string $id): View
     {
         $stock = Stock::findOrFail($id);
+        $stock->date_stocks = Carbon::parse($stock->date_stocks)->format('d M Y');
         $product = Product::where('code_products', $stock->product_stocks)->first();
         $data = [
             'judul' => 'Edit Stock',

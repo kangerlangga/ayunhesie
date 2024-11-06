@@ -44,6 +44,7 @@
                         <p>Dashboard</p>
                     </a>
                 </li>
+                @if (Auth::user()->level == 'Super Admin')
                 <li class="nav-item {{ Request::is('admin/order*') ? 'active' : '' }}">
                     <a href="{{ route('order.data') }}">
                         <i class="fas fa-shopping-cart"></i>
@@ -59,6 +60,7 @@
                         <p>Home Sliders</p>
                     </a>
                 </li>
+                @endif
                 <li class="nav-item {{ Request::is('admin/product*') ? 'active' : '' }}">
                     <a href="{{ route('product.data') }}">
                         <i class="fas fa-shopping-bag"></i>
@@ -71,6 +73,7 @@
                         <p>Stocks</p>
                     </a>
                 </li>
+                @if (Auth::user()->level == 'Super Admin')
                 <li class="nav-item {{ Request::is('admin/blog*') ? 'active' : '' }}">
                     <a href="{{ route('blog.data') }}">
                         <i class="far fa-newspaper"></i>
@@ -83,6 +86,7 @@
                         <p>Comments</p>
                     </a>
                 </li>
+                @endif
                 @if (Auth::user()->level == 'Super Admin')
                 <li class="nav-item {{ Request::is('admin/user*') ? 'active' : '' }}">
                     <a href="{{ route('user.data') }}">

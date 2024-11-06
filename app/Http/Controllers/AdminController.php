@@ -23,7 +23,6 @@ class AdminController extends Controller
         $data = [
             'judul' => 'Dashboard',
             'cP' => Product::count(),
-            'cS' => Product::sum('stock_products'),
             'cB' => Blog::count(),
             'cC' => Comment::count(),
             'cOP' => Order::where('status_orders', 'Pending')->count(),

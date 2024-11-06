@@ -35,14 +35,8 @@
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label for="MonthStock">Month</label>
-                                            <input class="form-control" name="MonthStock" value="{{ $EditStock->month_stocks }}" id="MonthStock" readonly style="cursor: not-allowed">
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <label for="YearStock">Year</label>
-                                            <input class="form-control" name="YearStock" value="{{ $EditStock->year_stocks }}" id="YearStock" readonly style="cursor: not-allowed">
+                                            <label for="DateStock">Date</label>
+                                            <input class="form-control" name="DateStock" value="{{ $EditStock->date_stocks }}" id="DateStock" readonly style="cursor: not-allowed">
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
@@ -64,12 +58,6 @@
                                         <div class="form-group">
                                             <label for="Type">Stock Type</label>
                                             <input class="form-control" name="Type" value="Original" id="Type" readonly style="cursor: not-allowed">
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <label for="DateStock">Date [Optional]</label>
-                                            <input class="form-control" name="DateStock" value="{{ $EditStock->date_stocks }}" id="DateStock" readonly style="cursor: not-allowed">
                                         </div>
                                     </div>
                                     <div class="col-sm-12 mt-1">

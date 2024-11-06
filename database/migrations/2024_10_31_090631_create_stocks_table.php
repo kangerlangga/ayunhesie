@@ -14,9 +14,7 @@ return new class extends Migration
         Schema::create('stocks', function (Blueprint $table) {
             $table->string('id_stocks')->primary();
             $table->string('product_stocks');
-            $table->date('date_stocks')->nullable();
-            $table->string('month_stocks');
-            $table->year('year_stocks');
+            $table->date('date_stocks');
             $table->integer('monthly_stocks');
             $table->string('type_stocks');
             $table->string('created_by');

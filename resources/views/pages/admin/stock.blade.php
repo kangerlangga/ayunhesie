@@ -35,6 +35,12 @@
                             New Stocks
                         </a>
                     </ul>
+                    <div class="ml-md-auto py-2 py-md-0">
+                        <a href="#" class="btn btn-round btn-default ml-auto fw-bold">
+                            <i class="fa fa-chart-line mr-1"></i>
+                            Forecasting
+                        </a>
+                    </div>
                 </div>
                 <div class="row">
                     <div class="col-md-12">
@@ -47,8 +53,7 @@
                                     <table id="basic-datatables" class="display table table-striped table-hover" >
                                         <thead>
                                             <tr>
-                                                <th>Year</th>
-                                                <th>Month</th>
+                                                <th>Date</th>
                                                 <th>Product</th>
                                                 <th>Stock</th>
                                                 <th>Type</th>
@@ -58,8 +63,7 @@
                                         <tbody>
                                             @foreach ($DataS as $s)
                                             <tr>
-                                                <td>{{ $s->year_stocks }}</td>
-                                                <td>{{ $s->month_stocks }}</td>
+                                                <td>{{ $s->date_stocks }}</td>
                                                 <td>{{ $s->product->name_products ?? 'N/A' }}</td>
                                                 <td>{{ $s->monthly_stocks }}</td>
                                                 <td>{{ $s->type_stocks }}</td>

@@ -25,7 +25,7 @@ class ForecastController extends Controller
         $request->validate([
             'DateStart' => 'required|date',
             'Alpha' => 'required|numeric|min:0|max:1',
-            'ForecastPeriod' => 'required|integer|min:1'
+            'ForecastPeriod' => 'required|integer|min:1|max:12'
         ]);
 
         $startDate = Carbon::parse($request->DateStart);

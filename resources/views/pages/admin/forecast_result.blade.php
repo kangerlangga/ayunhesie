@@ -54,11 +54,12 @@
                                 </div>
                                 <div class="card-body">
                                     @if ($forecastCountAboveThree >= 5)
-                                    <div class="chart-container mb-3">
+                                    <div class="chart-container">
                                         <canvas id="multipleLineChart-{{ $productCode }}"></canvas>
                                     </div>
+                                    <hr>
                                     @endif
-                                    <div class="table-responsive">
+                                    <div class="table-responsive pt-3">
                                         <table id="basic-datatables-{{ $productCode }}" class="display table table-striped table-hover">
                                             <thead>
                                                 <tr>

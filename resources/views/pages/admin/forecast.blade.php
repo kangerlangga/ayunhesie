@@ -41,8 +41,9 @@
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label for="DateFinish">Select End Date</label>
-                                            <input type="date" class="form-control" id="DateFinish" name="DateFinish" max="{{ date('Y-m-d') }}" value="{{ old('DateFinish') }}" required>
+                                            <label for="ForecastPeriod">Enter Forecast Period (1-12 Months)</label>
+                                            <input type="number" class="form-control" id="ForecastPeriod" name="ForecastPeriod" min="1" max="12" placeholder="1 - 12" value="{{ old('ForecastPeriod') }}" required>
+                                            <small class="form-text text-muted">Specify the number of months to forecast (1 to 12).</small>
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
@@ -50,13 +51,6 @@
                                             <label for="Alpha">Enter Alpha Value (0-1)</label>
                                             <input type="number" class="form-control" id="Alpha" name="Alpha" step="0.01" min="0" max="1" placeholder="0.1" value="{{ old('Alpha') }}" required>
                                             <small class="form-text text-muted">Alpha is a smoothing factor used in forecasting (0.1, 0.5).</small>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <label for="ForecastPeriod">Enter Forecast Period (1-12 Months)</label>
-                                            <input type="number" class="form-control" id="ForecastPeriod" name="ForecastPeriod" min="1" max="12" placeholder="1 - 12" value="{{ old('ForecastPeriod') }}" required>
-                                            <small class="form-text text-muted">Specify the number of months to forecast (1 to 12).</small>
                                         </div>
                                     </div>
                                     <div class="col-sm-12 mt-1">

@@ -64,7 +64,7 @@
                                                 <tr>
                                                     <th>No.</th>
                                                     <th>Date</th>
-                                                    <th>Actual Stock</th>
+                                                    <th>Actual</th>
                                                     <th>Forecast</th>
                                                     <th>Calculation Detail</th>
                                                 </tr>

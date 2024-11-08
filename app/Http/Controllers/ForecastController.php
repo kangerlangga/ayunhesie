@@ -32,7 +32,7 @@ class ForecastController extends Controller
         $alpha = $request->Alpha;
         $forecastPeriod = 1 + $request->ForecastPeriod;
 
-        $products = Stock::where('date_stocks', '<', $startDate)
+        $products = Stock::where('date_stocks', '>', $startDate)
                         ->select('product_stocks')
                         ->distinct()
                         ->get();
@@ -44,23 +44,14 @@ class ForecastController extends Controller
             $productCode = $product->product_stocks;
             $productName = Product::where('code_products', $productCode)->first()->name_products ?? 'Unknown Product';
 
-            $lastStockBeforeStart = Stock::where('product_stocks', $productCode)
-                                        ->where('date_stocks', '<', $startDate)
-                                        ->orderBy('date_stocks', 'desc')
-                                        ->first();
-
-            if (!$lastStockBeforeStart) {
-                continue;
-            }
-
             $productForecastData = [];
             $labels = [];
             $forecastValues = [];
             $actualValues = [];
             $calculationDetails = [];
 
-            $previousForecast = $lastStockBeforeStart->monthly_stocks;
-            $previousStock = $previousForecast;
+            $previousForecast = 0;
+            $previousStock = 0;
             $nextDate = $startDate->copy();
 
             $sumAbsoluteErrors = 0;
@@ -74,19 +65,17 @@ class ForecastController extends Controller
                                     ->whereMonth('date_stocks', $nextDate->month)
                                     ->first();
 
-                if ($i == 0 && $actualStock) {
-                    $currentForecast = $actualStock->monthly_stocks;
+                if ($i == 0) {
+                    $currentForecast = $actualStock ? $actualStock->monthly_stocks : 0;
                 } else {
                     $currentForecast = round(($alpha * $previousStock) + ((1 - $alpha) * $previousForecast));
                 }
-
-                $currentForecastR = ($alpha * $previousStock) + ((1 - $alpha) * $previousForecast);
 
                 if ($i == 0) {
                     $calculationDetails[] = "Forecast = Actual ({$nextDate->format('M Y')} = {$currentForecast})";
                 } else {
                     $previousMonth = $nextDate->copy()->subMonth()->format('M Y');
-                    $calculationDetails[] = "{$alpha} * {$previousStock} ({$previousMonth}) + (1 - {$alpha}) * {$previousForecast} = {$currentForecastR}";
+                    $calculationDetails[] = "{$alpha} * {$previousStock} ({$previousMonth}) + (1 - {$alpha}) * {$previousForecast} = {$currentForecast}";
                 }
 
                 $labels[] = $nextDate->format('M Y');
@@ -112,7 +101,7 @@ class ForecastController extends Controller
                 ];
 
                 $previousForecast = $currentForecast;
-                $previousStock = $actualStock ? $actualStock->monthly_stocks : $previousForecast;
+                $previousStock = $actualStock ? $actualStock->monthly_stocks : 0;
                 $nextDate = $nextDate->addMonth();
             }
 

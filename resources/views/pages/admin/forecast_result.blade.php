@@ -77,33 +77,27 @@
                                                 <?php $no = 1; ?>
                                                 @foreach ($productForecasts['forecastData'] as $data)
                                                     @php
-                                                        $absoluteError = abs($data['forecast'] - $data['actual']);
-                                                        $squaredError = pow($absoluteError, 2);
-                                                        $percentageError = $data['actual'] != 0 ? ($absoluteError / $data['actual']) * 100 : 0;
+                                                        if ($data['actual']) {
+                                                            $absoluteError = abs($data['forecast'] - $data['actual']);
+                                                            $squaredError = pow($absoluteError, 2);
+                                                            $percentageError = ($absoluteError / $data['actual']) * 100;
+                                                        } else if ($data['actual'] == 0 || !$data['actual']) {
+                                                            $absoluteError = null;
+                                                            $squaredError = null;
+                                                            $percentageError = null;
+                                                        }
                                                     @endphp
                                                     <tr>
                                                         <td>{{ $no++ }}</td>
                                                         <td>{{ \Carbon\Carbon::parse($data['date'])->format('F Y') }}</td>
                                                         <td>{{ ($data['actual'] == 0 || !$data['actual']) ? '-' : $data['actual'] }}</td>
                                                         <td>{{ $data['forecast'] }}</td>
-                                                        <td>{{ round($absoluteError, 2) }}</td>
-                                                        <td>{{ round($squaredError, 2) }}</td>
-                                                        <td>{{ round($percentageError, 2) }}%</td>
+                                                        <td>{{ $absoluteError !== null ? round($absoluteError, 2) : '-' }}</td> <!-- MAE per baris -->
+                                                        <td>{{ $squaredError !== null ? round($squaredError, 2) : '-' }}</td> <!-- MSE per baris -->
+                                                        <td>{{ $percentageError !== null ? round($percentageError, 2) . '%' : '-' }}</td> <!-- MAPE per baris -->
                                                         <td>{{ $data['calculationDetail'] }}</td>
                                                     </tr>
                                                 @endforeach
-
-                                                {{-- Baris rata-rata untuk MAE, MSE, MAPE --}}
-                                                {{-- <tr>
-                                                    <td></td> <!-- Kolom kosong untuk "No" -->
-                                                    <td><strong>Average:</strong></td> <!-- Kolom untuk label rata-rata -->
-                                                    <td></td> <!-- Kolom kosong untuk "Actual" -->
-                                                    <td></td> <!-- Kolom kosong untuk "Forecast" -->
-                                                    <td>{{ round($productForecasts['mae'], 2) }}</td> <!-- Rata-rata MAE -->
-                                                    <td>{{ round($productForecasts['mse'], 2) }}</td> <!-- Rata-rata MSE -->
-                                                    <td>{{ round($productForecasts['mape'], 2) }}%</td> <!-- Rata-rata MAPE -->
-                                                    <td></td> <!-- Kolom kosong untuk "calculationDetail" -->
-                                                </tr> --}}
                                             </tbody>
                                         </table>
                                     </div>

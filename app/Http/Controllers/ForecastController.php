@@ -63,6 +63,11 @@ class ForecastController extends Controller
             $previousStock = $previousForecast;
             $nextDate = $startDate->copy();
 
+            $sumAbsoluteErrors = 0;
+            $sumSquaredErrors = 0;
+            $sumPercentageErrors = 0;
+            $actualCount = 0;
+
             for ($i = 0; $i < $forecastPeriod; $i++) {
                 $actualStock = Stock::where('product_stocks', $productCode)
                                     ->whereYear('date_stocks', $nextDate->year)
@@ -88,6 +93,17 @@ class ForecastController extends Controller
                 $forecastValues[] = $currentForecast;
                 $actualValues[] = $actualStock ? $actualStock->monthly_stocks : 0;
 
+                if ($actualStock) {
+                    $absoluteError = abs($currentForecast - $actualStock->monthly_stocks);
+                    $squaredError = pow($absoluteError, 2);
+                    $percentageError = $actualStock->monthly_stocks != 0 ? ($absoluteError / $actualStock->monthly_stocks) * 100 : 0;
+
+                    $sumAbsoluteErrors += $absoluteError;
+                    $sumSquaredErrors += $squaredError;
+                    $sumPercentageErrors += $percentageError;
+                    $actualCount++;
+                }
+
                 $productForecastData[] = [
                     'date' => $nextDate->format('M Y'),
                     'forecast' => $currentForecast,
@@ -100,9 +116,16 @@ class ForecastController extends Controller
                 $nextDate = $nextDate->addMonth();
             }
 
+            $mae = $actualCount > 0 ? $sumAbsoluteErrors / $actualCount : 0;
+            $mse = $actualCount > 0 ? $sumSquaredErrors / $actualCount : 0;
+            $mape = $actualCount > 0 ? $sumPercentageErrors / $actualCount : 0;
+
             $forecastData[$productCode] = [
                 'productName' => $productName,
-                'forecastData' => $productForecastData
+                'forecastData' => $productForecastData,
+                'mae' => $mae,
+                'mse' => $mse,
+                'mape' => $mape
             ];
 
             $chartData[$productCode] = [

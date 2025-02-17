@@ -18,10 +18,6 @@ use Illuminate\Support\Facades\Route;
 //     return view('pages.error.404', compact('judul'));
 // });
 
-Route::get('/up', function () {
-    abort(404);
-});
-
 Route::get('/', [PublikController::class, 'home'])->name('home.publik');
 Route::get('/about', [PublikController::class, 'about'])->name('about.publik');
 Route::get('/collection', [PublikController::class, 'collection'])->name('collection.publik');

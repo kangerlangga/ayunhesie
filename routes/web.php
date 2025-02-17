@@ -18,6 +18,10 @@ use Illuminate\Support\Facades\Route;
 //     return view('pages.error.404', compact('judul'));
 // });
 
+Route::get('/up', function () {
+    abort(404);
+});
+
 Route::get('/', [PublikController::class, 'home'])->name('home.publik');
 Route::get('/about', [PublikController::class, 'about'])->name('about.publik');
 Route::get('/collection', [PublikController::class, 'collection'])->name('collection.publik');
@@ -65,12 +69,6 @@ Route::middleware(['auth', 'verified', CheckAdmin::class])->group(function () {
     Route::get('/admin/stock/forecast', [ForecastController::class, 'index'])->name('forecast.data');
     Route::post('/admin/stock/forecast/calculate', [ForecastController::class, 'calculateForecast'])->name('forecast.calculate');
 
-    // Route::get('/admin/forecast/add', [ForecastController::class, 'create'])->name('forecast.add');
-    // Route::post('/admin/forecast/store', [ForecastController::class, 'store'])->name('forecast.store');
-    // Route::get('/admin/forecast/edit/{id}', [ForecastController::class, 'edit'])->name('forecast.edit');
-    // Route::post('/admin/forecast/update/{id}', [ForecastController::class, 'update'])->name('forecast.update');
-    // Route::get('/admin/forecast/delete/{id}', [ForecastController::class, 'destroy'])->name('forecast.delete');
-
     Route::get('/admin/blog', [BlogController::class, 'index'])->name('blog.data');
     Route::get('/admin/blog/add', [BlogController::class, 'create'])->name('blog.add');
     Route::post('/admin/blog/store', [BlogController::class, 'store'])->name('blog.store');
@@ -102,15 +100,5 @@ Route::middleware(['auth', 'verified', CheckAdmin::class])->group(function () {
     Route::get('/admin/user/resetPass/{id}', [UserController::class, 'resetPass'])->name('user.resetpass');
 
 });
-
-// Route::get('/dashboard', function () {
-//     return view('dashboard');
-// })->middleware(['auth', 'verified'])->name('dashboard');
-
-// Route::middleware('auth')->group(function () {
-//     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-//     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-//     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-// });
 
 require __DIR__.'/auth.php';
